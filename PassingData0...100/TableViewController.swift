@@ -25,6 +25,13 @@ class TableViewController: UITableViewController {
         // Không thể thay đổi giá trị mảng trong func nên cần đổi sang mảng khác
         arrayString = array(number: 10)
     }
+    // Khi sẽ xuất hiện View thì load lại dòng đã trọn
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let index = tableView.indexPathForSelectedRow{
+            tableView.reloadRows(at: [index], with: .none)
+        }
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return arrayString.count
