@@ -10,6 +10,9 @@ import UIKit
 
 class TableViewController: UITableViewController {
     // Tạo mảng kiểu string
+
+
+    
     func array (number: Int) -> [String] {
         var a = [String]()
         for b in 0...number {
@@ -23,14 +26,10 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Không thể thay đổi giá trị mảng trong func nên cần đổi sang mảng khác
-        arrayString = array(number: 10)
-    }
-    // Khi sẽ xuất hiện View thì load lại dòng đã trọn
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if let index = tableView.indexPathForSelectedRow{
-            tableView.reloadRows(at: [index], with: .none)
-        }
+        arrayString = array(number: 1)
+        navigationItem.leftBarButtonItem = editButtonItem
+        // loat lựa trọn
+        clearsSelectionOnViewWillAppear = true
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -67,5 +66,25 @@ class TableViewController: UITableViewController {
                 tableView.insertRows(at: [indexPath], with: .automatic)
             }
         }
+    }
+    // Xoá ròng
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            arrayString.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    // Hiện thông báo khi xoá hết data
+    override func numberOfSections(in tableView: UITableView) -> Int
+    {
+        if arrayString.count == 0 {
+            let noDataLabel: UILabel     = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.bounds.size.height))
+            noDataLabel.text          = "No data"
+            noDataLabel.textColor     = UIColor.black
+            noDataLabel.textAlignment = .center
+            tableView.backgroundView  = noDataLabel
+            tableView.separatorStyle  = .none
+        }
+        return 1
     }
 }
